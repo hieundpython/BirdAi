@@ -1,5 +1,5 @@
 class Matrix {
-    constructor (rows, cols) {
+    constructor(rows, cols) {
         this.rows = rows;
         this.cols = cols;
         this.data = Array(this.rows).fill().map(() => Array(this.cols).fill(0));
@@ -8,7 +8,7 @@ class Matrix {
     copy() {
         let m = new Matrix(this.rows, this.cols);
         for (let i = 0; i < this.rows; i++) {
-            for (let j =0; j < this.cols; j++) {
+            for (let j = 0; j < this.cols; j++) {
                 m.data[i][j] = this.data[i][j];
             }
         }
@@ -31,8 +31,8 @@ class Matrix {
 
     toArray() {
         let arr = [];
-        for (let i =0; i < this.rows; i++) {
-            for (let j =0; j < this.rows; j++) {
+        for (let i = 0; i < this.rows; i++) {
+            for (let j = 0; j < this.rows; j++) {
                 arr.push(this.data[i][j]);
             }
         }
@@ -41,23 +41,23 @@ class Matrix {
     }
 
     randomize() {
-        return this.map(() => Math.random() * 2 -1);
+        return this.map(() => Math.random() * 2 - 1);
     }
-    
+
     add(n) {
         if (n instanceof Matrix) {
             if (this.rows !== n.rows || this.cols !== n.cols) {
                 console.log("Columns and rows A must match columns and rows B");
                 return;
-            } 
+            }
             return this.map((e, i, j) => e + n.data[i][j]);
         } else {
             return this.map(e => e + n);
         }
     }
 
-    static transpose(matrix){
-        return new Matrix(matrix.cols, matrix.rows).map((_,i,j) => matrix.data[j][i]);
+    static transpose(matrix) {
+        return new Matrix(matrix.cols, matrix.rows).map((_, i, j) => matrix.data[j][i]);
     }
 
     static multiply(a, b) {
@@ -66,16 +66,34 @@ class Matrix {
             return;
         }
 
+        return new Matrix(a.rows, b.cols)
+            .map((e, i, j) => {
+                let sum = 0;
+                for (let k = 0; k < a.cols; k++) {
+                    sum += a.data[i][k] * b.data[k][j];
+                }
+
+                return sum;
+            });
+
     }
 
 
-    multiply() {
-
+    multiply(n) {
+        if (n instanceof Matrix) {
+            if (this.rows !== n.rows || this.cols !== n.cols) {
+                console.log('Columns and Rows of A must match columns and rows of B');
+                return;
+            }
+            return this.map((e, i, j) => e * n.data[i][j]);
+        } else {
+            return this.map(e => e * n);
+        }
     }
 
     map(func) {
-        for (let i =0; i< this.rows; i++) {
-            for (let j =0; j < this.cols; j++) {
+        for (let i = 0; i < this.rows; i++) {
+            for (let j = 0; j < this.cols; j++) {
                 let val = this.data[i][j];
                 this.data[i][j] = func(val, i, j);
             }
