@@ -2,10 +2,10 @@ class Bird {
     constructor() {
         this.y = height /2;
         this.x = 64;
+        this.gravity = 0.6;
+        this.lift = 15;
+        this.velocity = 0;
     }
-
-    gravity = 1;
-    velocity = 0;
 
     show() {
         fill(255);
@@ -13,12 +13,12 @@ class Bird {
     }
 
     goUp() {
-        this.velocity -= this.gravity;
-        console.log(this.velocity);
+        this.velocity -= this.lift;
     }
 
     update() {
         this.velocity += this.gravity;
+        this.velocity *= 0.9;
         this.y += this.velocity;
         if (this.y > height) {
             this.y = height;
