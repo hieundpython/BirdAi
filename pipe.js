@@ -1,7 +1,7 @@
 class Pipe {
     constructor() {
-        this.top = random(height/2);
-        this.bottom = random(height/2);
+        this.top = random(height / 2);
+        this.bottom = random(height / 2);
         this.w = 20;
         this.x = width;
         this.speed = 2;
@@ -39,3 +39,7 @@ class Pipe {
         return false;
     }
 }
+
+export {
+    Pipe
+};

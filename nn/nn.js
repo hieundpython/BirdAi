@@ -1,3 +1,6 @@
+import {
+    Matrix
+} from './matrix.js';
 class ActivationFuntion {
     constructor(func, dfunc) {
         this.func = func;
@@ -15,24 +18,36 @@ let tanh = new ActivationFuntion(
     y => 1 - (y * y)
 );
 
-class NeuralNerwork {
+class NeuralNetwork {
     constructor(a, b, c) {
-        this.input_nodes = a;
-        this.hidden_nodes = b;
-        this.output_nodes = c;
+        if (a instanceof NeuralNetwork) {
+            this.input_nodes = a.input_nodes;
+            this.hidden_nodes = a.hidden_nodes;
+            this.output_nodes = a.output_nodes;
 
-        // init paramater
-
-        this.weights_ih = new Matrix(this.hidden_nodes, this.input_nodes);
-        this.weights_ho = new Matrix(this.output_nodes, this.hidden_nodes);
-
-        this.weights_ih.randomize();
-        this.weights_ho.randomize();
-
-        this.bias_h = new Matrix(this.hidden_nodes, 1);
-        this.bias_o = new Matrix(this.output_nodes, 1);
-        this.bias_h.randomize();
-        this.bias_o.randomize();
+            this.weights_ih = a.weights_ih.copy();
+            this.weights_ho = a.weights_ho.copy();
+            
+            this.bias_h = a.bias_h.copy();
+            this.bias_o = a.bias_o.copy();
+        } else {
+            this.input_nodes = a;
+            this.hidden_nodes = b;
+            this.output_nodes = c;
+    
+            // init paramater
+    
+            this.weights_ih = new Matrix(this.hidden_nodes, this.input_nodes);
+            this.weights_ho = new Matrix(this.output_nodes, this.hidden_nodes);
+    
+            this.weights_ih.randomize();
+            this.weights_ho.randomize();
+    
+            this.bias_h = new Matrix(this.hidden_nodes, 1);
+            this.bias_o = new Matrix(this.output_nodes, 1);
+            this.bias_h.randomize();
+            this.bias_o.randomize();
+        }       
 
         // init activation funtion
         this.setLearningRate();
@@ -132,7 +147,7 @@ class NeuralNerwork {
     }
 
     copy() {
-        return new NeuralNerwork(this);
+        return new NeuralNetwork(this);
     }
 
     mutate(func) {
@@ -142,3 +157,5 @@ class NeuralNerwork {
         this.bias_o.map(func);
     }
 }
+
+export {NeuralNetwork, ActivationFuntion};

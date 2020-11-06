@@ -1,3 +1,10 @@
+import {
+    Bird
+} from './bird.js';
+import {
+    Pipe
+} from './pipe.js';
+
 var bird;
 var pipes = [];
 
@@ -10,6 +17,7 @@ function setup() {
 
 function draw() {
     background(0);
+    bird.think();
     bird.update();
     bird.show();
 
@@ -36,3 +44,7 @@ function keyPressed() {
         bird.goUp();
     }
 }
+
+window.setup = setup;
+window.draw = draw;
+window.keyPressed = keyPressed;
